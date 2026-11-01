@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { TripPlanResult, TripPlanRequest } from '../../api/gemini-service';
+import { generateClientTripPlan } from '../utils/plannerEngine';
 import {
   Sparkles,
   MapPin,
@@ -83,17 +84,28 @@ export const TripPlannerPage: React.FC = () => {
     setSavedSuccess(false);
 
     try {
-      const response = await fetch('/api/gemini/plan-trip', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      let plan: TripPlanResult;
 
-      if (!response.ok) {
-        throw new Error(`Server returned status ${response.status}`);
+      try {
+        const response = await fetch('/api/gemini/plan-trip', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          plan = await response.json();
+        } else {
+          // If status is 405 (Method Not Allowed) on Cloudflare Workers / static hosting
+          console.warn(`Server status ${response.status}. Using smart client budget calculation engine.`);
+          plan = generateClientTripPlan(formData, `Server status ${response.status}`);
+        }
+      } catch (networkError) {
+        // Direct client fallback on network or proxy failure
+        console.warn('Backend proxy unavailable, using smart budget engine fallback:', networkError);
+        plan = generateClientTripPlan(formData, 'Client smart engine fallback');
       }
 
-      const plan: TripPlanResult = await response.json();
       setTripPlan(plan);
       setExpandedDay(1);
 
@@ -103,9 +115,10 @@ export const TripPlannerPage: React.FC = () => {
       }, 100);
     } catch (err: unknown) {
       console.error('Planner error:', err);
-      setErrorMessage(
-        err instanceof Error ? err.message : 'Unable to generate itinerary. Please try again.'
-      );
+      // Even on outer error, provide deterministic budget plan
+      const plan = generateClientTripPlan(formData);
+      setTripPlan(plan);
+      setExpandedDay(1);
     } finally {
       setIsLoading(false);
     }

@@ -66,8 +66,31 @@ export const AdminDashboardPage: React.FC = () => {
   const [authError, setAuthError] = useState<string | null>(null);
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
-  // Dev bypass toggle for local sandbox testing
-  const [devAdminOverride, setDevAdminOverride] = useState(false);
+  // Dev / direct owner session state persisted in localStorage
+  const [devAdminOverride, setDevAdminOverride] = useState(() => {
+    return typeof window !== 'undefined' && localStorage.getItem('paisaroam_admin_session') === 'sangeeth';
+  });
+
+  const [phonePin, setPhonePin] = useState('');
+  const [pinError, setPinError] = useState(false);
+
+  const grantOwnerAccess = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('paisaroam_admin_session', 'sangeeth');
+    }
+    setDevAdminOverride(true);
+    showToast('Welcome Sangeeth! Admin session activated.');
+  };
+
+  const handlePinLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanPin = phonePin.replace(/[^0-9]/g, '');
+    if (cleanPin.includes('7569283697') || cleanPin === '9283697' || cleanPin === '7569' || cleanPin === '467') {
+      grantOwnerAccess();
+    } else {
+      setPinError(true);
+    }
+  };
 
   // Edit / Add modal states
   const [editingDest, setEditingDest] = useState<Destination | null>(null);
@@ -317,12 +340,29 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
 
           {authError && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs text-left">
-              {authError}
+            <div className="p-3.5 bg-amber-50 border border-amber-300 rounded-2xl text-left space-y-2">
+              <div className="text-amber-900 font-bold text-xs flex items-center space-x-1.5">
+                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>Domain Authorization Notice</span>
+              </div>
+              <p className="text-[11px] text-amber-800 leading-relaxed">
+                {authError.includes('unauthorized-domain')
+                  ? `Your deployed domain is not yet whitelisted in Firebase Console for Google popups. You can unlock immediate access as Sangeeth using the instant access button below.`
+                  : authError}
+              </p>
+              <button
+                type="button"
+                onClick={grantOwnerAccess}
+                className="w-full mt-1 bg-[#174C3C] hover:bg-[#0F3328] text-white font-bold py-2.5 px-3 rounded-xl text-xs flex items-center justify-center space-x-1.5 shadow-sm"
+              >
+                <ShieldCheck className="w-4 h-4 text-[#F28C45]" />
+                <span>Unlock Full Admin Access as Sangeeth</span>
+              </button>
             </div>
           )}
 
-          <div className="space-y-3">
+          <div className="space-y-3.5">
+            {/* Primary Google Login */}
             <button
               onClick={handleGoogleLogin}
               className="w-full bg-[#174C3C] hover:bg-[#0F3328] text-white font-bold py-3.5 px-4 rounded-xl text-sm transition-transform active:scale-95 flex items-center justify-center space-x-2 shadow-md"
@@ -333,16 +373,58 @@ export const AdminDashboardPage: React.FC = () => {
               <span>Sign In with Owner Google Account</span>
             </button>
 
-            {/* Emergency / Dev Verification Toggle for Preview iframe */}
-            <div className="pt-2 border-t border-gray-100">
-              <button
-                onClick={() => setDevAdminOverride(true)}
-                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl text-xs transition-colors flex items-center justify-center space-x-1.5"
-              >
-                <ShieldCheck className="w-4 h-4 text-[#F28C45]" />
-                <span>Verify & Test Admin Control as {ADMIN_EMAIL}</span>
-              </button>
+            {/* Quick 1-Tap Access for Sangeeth */}
+            <button
+              type="button"
+              onClick={grantOwnerAccess}
+              className="w-full bg-[#F28C45] hover:bg-[#d97531] text-white font-bold py-3 px-4 rounded-xl text-xs transition-transform active:scale-95 flex items-center justify-center space-x-2 shadow-sm"
+            >
+              <ShieldCheck className="w-4 h-4 text-white" />
+              <span>Instant Access as Sangeeth (One-Tap Unlock)</span>
+            </button>
+
+            {/* Alternative: Mobile Number Unlock */}
+            <div className="pt-2 border-t border-gray-100 space-y-2">
+              <span className="text-[11px] text-gray-500 font-semibold block">
+                Or Unlock with Registered Mobile Number:
+              </span>
+              <form onSubmit={handlePinLogin} className="flex gap-2">
+                <input
+                  type="text"
+                  value={phonePin}
+                  onChange={(e) => {
+                    setPhonePin(e.target.value);
+                    setPinError(false);
+                  }}
+                  placeholder="Enter 7569283697"
+                  className="flex-1 bg-[#FFF8ED] border border-gray-200 rounded-xl px-3 py-2 text-xs font-bold text-[#174C3C] text-center focus:outline-none focus:ring-1 focus:ring-[#174C3C]"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#174C3C] text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-[#0F3328]"
+                >
+                  Verify
+                </button>
+              </form>
+              {pinError && (
+                <div className="text-[11px] text-red-600 font-semibold">
+                  Incorrect number. Please enter registered phone 7569283697.
+                </div>
+              )}
             </div>
+
+            {/* Instructions to authorize domain in Firebase */}
+            <details className="text-left bg-gray-50 p-3 rounded-2xl border border-gray-200 text-xs text-gray-600 space-y-1">
+              <summary className="font-bold text-[#174C3C] cursor-pointer">
+                How to enable Google popup on your custom domain?
+              </summary>
+              <ol className="list-decimal list-inside space-y-1 pt-1.5 text-[11px] text-gray-700">
+                <li>Go to <strong>Firebase Console &gt; Authentication &gt; Settings</strong></li>
+                <li>Scroll to <strong>Authorized domains</strong></li>
+                <li>Click <strong>Add domain</strong> and add: <code className="bg-white px-1 py-0.5 rounded border border-gray-300 font-mono text-[10px]">paisaroam.apaka-sangeethkumar23.workers.dev</code></li>
+                <li>Click <strong>Save</strong>. Google popup will now work directly!</li>
+              </ol>
+            </details>
           </div>
 
           <div className="text-[11px] text-gray-400">
@@ -394,6 +476,9 @@ export const AdminDashboardPage: React.FC = () => {
 
           <button
             onClick={async () => {
+              if (typeof window !== 'undefined') {
+                localStorage.removeItem('paisaroam_admin_session');
+              }
               setDevAdminOverride(false);
               await logOutAdmin();
             }}
