@@ -1,0 +1,192 @@
+{
+  "entities": {
+    "Destination": {
+      "title": "Destination",
+      "description": "A travel destination with cost estimates and highlights",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "state": { "type": "string", "maxLength": 100 },
+        "region": { "type": "string", "maxLength": 50 },
+        "budgetPerPerson": { "type": "number" },
+        "idealDays": { "type": "number" },
+        "bestSeason": { "type": "string", "maxLength": 100 },
+        "travellerTypes": { "type": "array" },
+        "categories": { "type": "array" },
+        "heroImage": { "type": "string", "maxLength": 1000 },
+        "images": { "type": "array" },
+        "description": { "type": "string", "maxLength": 2000 },
+        "highlights": { "type": "array" },
+        "transportEstimate": { "type": "number" },
+        "stayEstimate": { "type": "number" },
+        "foodEstimate": { "type": "number" },
+        "activityEstimate": { "type": "number" },
+        "isFeatured": { "type": "boolean" },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["name", "state", "budgetPerPerson", "idealDays"]
+    },
+    "TripPackage": {
+      "title": "TripPackage",
+      "description": "Curated budget trip packages with pre-made itineraries",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 150 },
+        "destinationName": { "type": "string", "maxLength": 100 },
+        "days": { "type": "number" },
+        "estimatedCost": { "type": "number" },
+        "tag": { "type": "string", "maxLength": 50 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "highlights": { "type": "array" },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["title", "destinationName", "days", "estimatedCost"]
+    },
+    "TravelGuide": {
+      "title": "TravelGuide",
+      "description": "Budget travel guides, hacks, and blog articles",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200 },
+        "slug": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "maxLength": 100 },
+        "readTime": { "type": "string", "maxLength": 50 },
+        "coverImage": { "type": "string", "maxLength": 1000 },
+        "excerpt": { "type": "string", "maxLength": 500 },
+        "content": { "type": "string", "maxLength": 15000 },
+        "budgetTier": { "type": "string", "maxLength": 50 },
+        "tags": { "type": "array" },
+        "author": { "type": "string", "maxLength": 100 },
+        "isPublished": { "type": "boolean" },
+        "createdAt": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["title", "slug", "category", "content"]
+    },
+    "HomepageContent": {
+      "title": "HomepageContent",
+      "description": "Dynamic homepage hero, promotions, and contact info",
+      "type": "object",
+      "properties": {
+        "heroHeading": { "type": "string", "maxLength": 200 },
+        "heroSubtitle": { "type": "string", "maxLength": 500 },
+        "heroImageUrl": { "type": "string", "maxLength": 1000 },
+        "promoBannerText": { "type": "string", "maxLength": 300 },
+        "promoBannerActive": { "type": "boolean" },
+        "contactEmail": { "type": "string", "maxLength": 100 },
+        "contactPhone": { "type": "string", "maxLength": 50 },
+        "contactWhatsapp": { "type": "string", "maxLength": 50 },
+        "instagramUrl": { "type": "string", "maxLength": 300 },
+        "twitterUrl": { "type": "string", "maxLength": 300 },
+        "updatedAt": { "type": "string", "maxLength": 100 }
+      }
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Site-wide announcement banner",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string", "maxLength": 50 },
+        "isActive": { "type": "boolean" },
+        "linkUrl": { "type": "string", "maxLength": 500 },
+        "linkText": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["message", "isActive"]
+    },
+    "TripPlan": {
+      "title": "TripPlan",
+      "description": "Generated or saved user trip plans",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userEmail": { "type": "string", "maxLength": 150 },
+        "startingCity": { "type": "string", "maxLength": 100 },
+        "destination": { "type": "string", "maxLength": 100 },
+        "days": { "type": "number" },
+        "travellers": { "type": "number" },
+        "totalBudget": { "type": "number" },
+        "travellerType": { "type": "string", "maxLength": 50 },
+        "travelStyle": { "type": "string", "maxLength": 50 },
+        "transportPreference": { "type": "string", "maxLength": 50 },
+        "interests": { "type": "array" },
+        "planDetails": { "type": "object", "description": "Structured AI trip plan" },
+        "createdAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["destination", "days", "travellers", "totalBudget"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User feedback, trip queries, and contact submissions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "subject": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "rating": { "type": "number" },
+        "status": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["name", "email", "message"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Whitelisted administrator credentials and profile",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "maxLength": 50 },
+        "addedAt": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/destinations/{destinationId}": {
+      "schema": "Destination",
+      "description": "Collection of budget travel destinations in India"
+    },
+    "/tripPackages/{packageId}": {
+      "schema": "TripPackage",
+      "description": "Collection of curated budget trip packages"
+    },
+    "/travelGuides/{guideId}": {
+      "schema": "TravelGuide",
+      "description": "Collection of budget travel articles and tips"
+    },
+    "/homepageContent/{docId}": {
+      "schema": "HomepageContent",
+      "description": "Homepage editable headers, banners, and contacts"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Top announcement banners"
+    },
+    "/tripPlans/{planId}": {
+      "schema": "TripPlan",
+      "description": "Saved trip plans"
+    },
+    "/feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User queries, submissions, and reviews"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Admin identity and role whitelist"
+    }
+  }
+}

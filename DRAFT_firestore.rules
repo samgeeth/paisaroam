@@ -1,0 +1,49 @@
+// DRAFT rules synced with firestore.rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() { return request.auth != null; }
+    function isVerifiedEmail() { return isSignedIn() && request.auth.token.email_verified == true; }
+    function isAdmin() {
+      return isVerifiedEmail() && (
+        request.auth.token.email == 'sangeethk467@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+    function isValidId(id) { return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    match /{document=**} { allow read, write: if false; }
+    match /destinations/{destinationId} {
+      allow read: if true;
+      allow write: if isValidId(destinationId) && isAdmin();
+    }
+    match /tripPackages/{packageId} {
+      allow read: if true;
+      allow write: if isValidId(packageId) && isAdmin();
+    }
+    match /travelGuides/{guideId} {
+      allow read: if true;
+      allow write: if isValidId(guideId) && isAdmin();
+    }
+    match /homepageContent/{docId} {
+      allow read: if true;
+      allow write: if isValidId(docId) && isAdmin();
+    }
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if isValidId(announcementId) && isAdmin();
+    }
+    match /tripPlans/{planId} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isValidId(planId);
+      allow update, delete: if isValidId(planId) && (isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid));
+    }
+    match /feedback/{feedbackId} {
+      allow read: if isAdmin();
+      allow create: if isValidId(feedbackId);
+      allow update, delete: if isValidId(feedbackId) && isAdmin();
+    }
+    match /admins/{adminId} {
+      allow read, write: if isValidId(adminId) && isAdmin();
+    }
+  }
+}

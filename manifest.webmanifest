@@ -1,0 +1,24 @@
+{
+  "name": "PAISAROAM - Big Adventures. Small Budgets.",
+  "short_name": "PAISAROAM",
+  "description": "Affordable trip planning, budget discovery, expense splitting, and AI travel itineraries for India.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF8ED",
+  "theme_color": "#174C3C",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><circle cx='96' cy='96' r='90' fill='%23174C3C'/><path d='M50 130 L96 45 L142 130 Z' fill='%23F28C45'/><circle cx='96' cy='105' r='16' fill='%23FFF8ED'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='240' fill='%23174C3C'/><path d='M130 350 L256 120 L382 350 Z' fill='%23F28C45'/><circle cx='256' cy='280' r='42' fill='%23FFF8ED'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

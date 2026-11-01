@@ -1,0 +1,6 @@
+{
+  "name": "PAISAROAM - Big Adventures. Small Budgets.",
+  "description": "India's premier budget travel discovery, smart AI trip planner, group expense splitter, and interactive travel budget calculator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

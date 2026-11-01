@@ -1,0 +1,119 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedEmail() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isAdmin() {
+      return isVerifiedEmail() && (
+        request.auth.token.email == 'sangeethk467@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidDestination(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.state is string && data.state.size() > 0 && data.state.size() <= 100 &&
+             data.budgetPerPerson is number && data.budgetPerPerson >= 0 &&
+             data.idealDays is number && data.idealDays > 0 && data.idealDays <= 30;
+    }
+
+    function isValidTripPackage(data) {
+      return data.title is string && data.title.size() > 0 && data.title.size() <= 150 &&
+             data.destinationName is string && data.destinationName.size() > 0 && data.destinationName.size() <= 100 &&
+             data.days is number && data.days > 0 &&
+             data.estimatedCost is number && data.estimatedCost >= 0;
+    }
+
+    function isValidTravelGuide(data) {
+      return data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+             data.slug is string && data.slug.size() > 0 && data.slug.size() <= 150 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.content is string && data.content.size() <= 20000;
+    }
+
+    function isValidFeedback(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() > 0 && data.email.size() <= 150 &&
+             data.message is string && data.message.size() > 0 && data.message.size() <= 3000;
+    }
+
+    function isValidTripPlan(data) {
+      return data.destination is string && data.destination.size() > 0 && data.destination.size() <= 100 &&
+             data.days is number && data.days > 0 && data.days <= 30 &&
+             data.travellers is number && data.travellers > 0 && data.travellers <= 50 &&
+             data.totalBudget is number && data.totalBudget >= 0;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Destinations collection
+    match /destinations/{destinationId} {
+      allow read: if true;
+      allow create: if isValidId(destinationId) && isAdmin() && isValidDestination(request.resource.data);
+      allow update: if isValidId(destinationId) && isAdmin() && isValidDestination(request.resource.data);
+      allow delete: if isValidId(destinationId) && isAdmin();
+    }
+
+    // Trip Packages collection
+    match /tripPackages/{packageId} {
+      allow read: if true;
+      allow create: if isValidId(packageId) && isAdmin() && isValidTripPackage(request.resource.data);
+      allow update: if isValidId(packageId) && isAdmin() && isValidTripPackage(request.resource.data);
+      allow delete: if isValidId(packageId) && isAdmin();
+    }
+
+    // Travel Guides collection
+    match /travelGuides/{guideId} {
+      allow read: if true;
+      allow create: if isValidId(guideId) && isAdmin() && isValidTravelGuide(request.resource.data);
+      allow update: if isValidId(guideId) && isAdmin() && isValidTravelGuide(request.resource.data);
+      allow delete: if isValidId(guideId) && isAdmin();
+    }
+
+    // Homepage Content
+    match /homepageContent/{docId} {
+      allow read: if true;
+      allow write: if isValidId(docId) && isAdmin();
+    }
+
+    // Announcements
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if isValidId(announcementId) && isAdmin();
+    }
+
+    // User Trip Plans
+    match /tripPlans/{planId} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isValidId(planId) && isValidTripPlan(request.resource.data);
+      allow update, delete: if isValidId(planId) && (isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid));
+    }
+
+    // User Feedback and contact inquiries
+    match /feedback/{feedbackId} {
+      allow read: if isAdmin();
+      allow create: if isValidId(feedbackId) && isValidFeedback(request.resource.data);
+      allow update, delete: if isValidId(feedbackId) && isAdmin();
+    }
+
+    // Admins whitelist collection
+    match /admins/{adminId} {
+      allow read, write: if isValidId(adminId) && isAdmin();
+    }
+  }
+}
