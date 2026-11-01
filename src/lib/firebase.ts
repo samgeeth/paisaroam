@@ -4,6 +4,8 @@ import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 export const ADMIN_EMAIL = 'sangeethk467@gmail.com';
+export const ADMIN_NAME = 'Sangeeth';
+export const ADMIN_PHONE = '+91 7569283697';
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 

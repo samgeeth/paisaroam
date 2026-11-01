@@ -168,6 +168,16 @@ export const AboutContactPage: React.FC = () => {
 
             <div className="space-y-4 pt-2 text-sm text-[#FFF8ED]">
               <div className="flex items-center space-x-3 bg-white/10 p-3 rounded-2xl">
+                <div className="w-9 h-9 rounded-xl bg-[#F28C45] flex items-center justify-center font-bold text-white shrink-0">
+                  S
+                </div>
+                <div>
+                  <div className="text-[11px] text-white/60">Founder & Administrator</div>
+                  <strong className="text-white text-base">Sangeeth</strong>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3 bg-white/10 p-3 rounded-2xl">
                 <Mail className="w-5 h-5 text-[#F28C45] shrink-0" />
                 <div>
                   <div className="text-[11px] text-white/60">Official Email</div>
@@ -175,11 +185,23 @@ export const AboutContactPage: React.FC = () => {
                 </div>
               </div>
 
+              {homepageContent.contactPhone && (
+                <div className="flex items-center space-x-3 bg-white/10 p-3 rounded-2xl">
+                  <Phone className="w-5 h-5 text-[#F28C45] shrink-0" />
+                  <div>
+                    <div className="text-[11px] text-white/60">Phone Number</div>
+                    <a href={`tel:${homepageContent.contactPhone}`} className="text-white font-bold hover:underline">
+                      {homepageContent.contactPhone}
+                    </a>
+                  </div>
+                </div>
+              )}
+
               {homepageContent.contactWhatsapp && (
                 <div className="flex items-center space-x-3 bg-white/10 p-3 rounded-2xl">
                   <MessageSquare className="w-5 h-5 text-emerald-400 shrink-0" />
                   <div>
-                    <div className="text-[11px] text-white/60">WhatsApp Support</div>
+                    <div className="text-[11px] text-white/60">WhatsApp Direct</div>
                     <strong className="text-white">{homepageContent.contactWhatsapp}</strong>
                   </div>
                 </div>
@@ -189,13 +211,13 @@ export const AboutContactPage: React.FC = () => {
             {homepageContent.contactWhatsapp && (
               <div className="pt-2">
                 <a
-                  href={`https://wa.me/${homepageContent.contactWhatsapp.replace(/[^0-9]/g, '')}?text=Hi%20PAISAROAM%20team,%20I%20have%20a%20budget%20trip%20question`}
+                  href={`https://wa.me/${homepageContent.contactWhatsapp.replace(/[^0-9]/g, '')}?text=Hi%20Sangeeth,%20I%20have%20a%20budget%20trip%20question%20for%20PAISAROAM`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-[#4F8063] hover:bg-[#3d654e] text-white font-bold py-3 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-md transition-colors"
                 >
                   <MessageSquare className="w-4 h-4" />
-                  <span>Chat on WhatsApp Directly</span>
+                  <span>Chat with Sangeeth on WhatsApp</span>
                 </a>
               </div>
             )}

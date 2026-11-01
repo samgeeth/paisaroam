@@ -64,6 +64,7 @@ export interface HomepageContent {
   contactEmail: string;
   contactPhone: string;
   contactWhatsapp: string;
+  founderName?: string;
   instagramUrl: string;
   twitterUrl: string;
   youtubeUrl?: string;

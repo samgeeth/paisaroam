@@ -313,7 +313,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           <div className="p-3.5 bg-[#FFF8ED] rounded-2xl border border-[#4F8063]/30 text-xs text-gray-700 space-y-1 text-left">
             <span className="font-bold text-[#174C3C] block">Owner Security Policy:</span>
-            <span>Only configured owner (<strong className="text-gray-900">{ADMIN_EMAIL}</strong>) can modify destinations, prices, articles, and hero banners.</span>
+            <span>Only configured owner <strong>Sangeeth</strong> (<strong className="text-gray-900">{ADMIN_EMAIL}</strong> • <strong>+91 7569283697</strong>) can modify destinations, prices, articles, and hero banners.</span>
           </div>
 
           {authError && (
@@ -377,8 +377,8 @@ export const AdminDashboardPage: React.FC = () => {
                 Active
               </span>
             </div>
-            <p className="text-xs text-[#FFF8ED]/80 truncate max-w-xs">
-              Logged in: <strong>{user?.email || ADMIN_EMAIL}</strong>
+            <p className="text-xs text-[#FFF8ED]/80 truncate max-w-sm">
+              Logged in: <strong>Sangeeth ({user?.email || ADMIN_EMAIL})</strong> • <strong>+91 7569283697</strong>
             </p>
           </div>
         </div>

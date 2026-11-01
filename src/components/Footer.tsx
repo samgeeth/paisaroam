@@ -137,6 +137,9 @@ export const Footer: React.FC = () => {
               Get in Touch
             </h4>
             <ul className="space-y-2.5 text-xs text-[#FFF8ED]/80">
+              <li className="text-[11px] font-bold text-white/90">
+                Founder: Sangeeth
+              </li>
               <li className="flex items-center space-x-2">
                 <Mail className="w-3.5 h-3.5 text-[#F28C45] shrink-0" />
                 <span className="truncate">{homepageContent.contactEmail}</span>
@@ -144,19 +147,21 @@ export const Footer: React.FC = () => {
               {homepageContent.contactPhone && (
                 <li className="flex items-center space-x-2">
                   <Phone className="w-3.5 h-3.5 text-[#F28C45] shrink-0" />
-                  <span>{homepageContent.contactPhone}</span>
+                  <a href={`tel:${homepageContent.contactPhone}`} className="hover:text-white transition-colors">
+                    {homepageContent.contactPhone}
+                  </a>
                 </li>
               )}
               {homepageContent.contactWhatsapp && (
                 <li className="pt-1">
                   <a
-                    href={`https://wa.me/${homepageContent.contactWhatsapp.replace(/[^0-9]/g, '')}?text=Hi%20PAISAROAM%20team,%20I%20have%20a%20budget%20trip%20query`}
+                    href={`https://wa.me/${homepageContent.contactWhatsapp.replace(/[^0-9]/g, '')}?text=Hi%20Sangeeth,%20I%20have%20a%20budget%20trip%20query%20on%20PAISAROAM`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center space-x-1.5 bg-[#4F8063] hover:bg-[#3d654e] text-white px-3 py-1.5 rounded-lg font-semibold text-xs transition-colors"
                   >
                     <MessageSquare className="w-3.5 h-3.5" />
-                    <span>WhatsApp Chat</span>
+                    <span>WhatsApp Sangeeth</span>
                   </a>
                 </li>
               )}

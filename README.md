@@ -124,8 +124,10 @@ npm start
    - The app is connected to Firebase Firestore and Firebase Authentication (`firebase-applet-config.json`).
    - Firestore security rules are deployed in `firestore.rules`.
 
-2. **Admin Email Configuration**:
-   - Administrator email: **`sangeethk467@gmail.com`**.
+2. **Admin Email & Owner Configuration**:
+   - Website Owner & Founder: **Sangeeth**
+   - Administrator Phone / WhatsApp: **`+91 7569283697`**
+   - Administrator email: **`sangeethk467@gmail.com`**
    - In the Firebase Console (**Build > Authentication > Sign-in method**), ensure the **Google** provider is enabled.
    - When logging into `https://paisaroam.com/#admin`, sign in with `sangeethk467@gmail.com` to unlock full administrative permissions.
 

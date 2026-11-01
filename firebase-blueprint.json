@@ -84,6 +84,7 @@
         "contactEmail": { "type": "string", "maxLength": 100 },
         "contactPhone": { "type": "string", "maxLength": 50 },
         "contactWhatsapp": { "type": "string", "maxLength": 50 },
+        "founderName": { "type": "string", "maxLength": 100 },
         "instagramUrl": { "type": "string", "maxLength": 300 },
         "twitterUrl": { "type": "string", "maxLength": 300 },
         "updatedAt": { "type": "string", "maxLength": 100 }
